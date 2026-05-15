@@ -714,6 +714,7 @@
                     const reviews = Math.floor(Math.random() * 500) + 10;
                     const isTrending = Math.random() > 0.7;
 
+                    const seed = id * 100;
                     products.push({
                         id: id++,
                         name: `${adj} ${label}`,
@@ -721,18 +722,7 @@
                         categoryLabel: label,
                         price: price,
                         originalPrice: Math.random() > 0.6 ? Math.floor(price * 1.25) : null,
-                        image: `https://images.unsplash.com/photo-${[
-                            '1596462502278-27bfdc403348?w=600&q=80',
-                            '1609081218090-1e2b5d9a0c9f?w=600&q=80',
-                            '1596174526007-6e12b3a2c0b8?w=600&q=80',
-                            '1597773159156-5e5f6d6b7b8f?w=600&q=80',
-                            '1607773159156-5e5f6d6b7b8f?w=600&q=80',
-                            '1596462502278-27bfdc403348?w=600&q=80',
-                            '1609081218090-1e2b5d9a0c9f?w=600&q=80',
-                            '1596174526007-6e12b3a2c0b8?w=600&q=80',
-                            '1597773159156-5e5f6d6b7b8f?w=600&q=80',
-                            '1607773159156-5e5f6d6b7b8f?w=600&q=80'
-                        ][id % 10]}`,
+                        image: `https://picsum.photos/seed/${seed}/600/400`,
                         colors: colors,
                         rating: parseFloat(rating),
                         reviews: reviews,
