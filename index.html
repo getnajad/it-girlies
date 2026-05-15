@@ -130,6 +130,13 @@
             font-family: 'Quicksand', sans-serif; letter-spacing: 0.5px; margin-left: 12px;
         }
         .btn-secondary:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-4px); }
+        .btn-whatsapp {
+            background: #25D366; color: white; padding: 14px 44px;
+            border: none; border-radius: 50px; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: all 0.4s; text-decoration: none; display: inline-block;
+            font-family: 'Quicksand', sans-serif; letter-spacing: 0.5px;
+        }
+        .btn-whatsapp:hover { background: #1DA851; transform: translateY(-3px); }
         .hero-badges { display: flex; justify-content: center; gap: 40px; margin-top: 50px; flex-wrap: wrap; }
         .hero-badge { text-align: center; }
         .hero-badge strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.8rem; background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -565,6 +572,7 @@
                 <span id="total-price">₹0</span>
             </div>
             <button id="checkout-btn" class="btn-primary" style="width: 100%;">Checkout</button>
+            <button id="whatsapp-btn" class="btn-whatsapp" style="width: 100%; margin-top: 8px;">💬 Order via WhatsApp</button>
         </div>
     </div>
 
@@ -714,7 +722,7 @@
                     const reviews = Math.floor(Math.random() * 500) + 10;
                     const isTrending = Math.random() > 0.7;
 
-                    const seed = id * 100;
+                    const imgQuery = imgKeywords[category].replace(/\+/g, ',');
                     products.push({
                         id: id++,
                         name: `${adj} ${label}`,
@@ -722,7 +730,7 @@
                         categoryLabel: label,
                         price: price,
                         originalPrice: Math.random() > 0.6 ? Math.floor(price * 1.25) : null,
-                        image: `https://picsum.photos/seed/${seed}/600/400`,
+                        image: `https://loremflickr.com/600/400/${imgQuery}?lock=${id}`,
                         colors: colors,
                         rating: parseFloat(rating),
                         reviews: reviews,
@@ -912,6 +920,19 @@
             `).join('');
         }
 
+        // WhatsApp checkout
+        function whatsappCheckout() {
+            if (cart.length === 0) { showToast('Your bag is empty!'); return; }
+            const phone = '918907053378';
+            let msg = '🛍 *IT Girlies Order*%0A%0A';
+            cart.forEach((item, i) => {
+                msg += `${i+1}. ${item.name} × ${item.quantity} = ₹${(item.price * item.quantity).toLocaleString('en-IN')}%0A`;
+            });
+            const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+            msg += `%0A*Total: ₹${total.toLocaleString('en-IN')}*%0A%0AThank you, IT Girlie! 🎀`;
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        }
+
         // Toast
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -953,6 +974,10 @@
                 updateCart();
             });
             closeModal.addEventListener('click', () => modal.classList.remove('show'));
+
+            // WhatsApp checkout
+            const whatsappBtn = document.getElementById('whatsapp-btn');
+            whatsappBtn.addEventListener('click', whatsappCheckout);
 
             window.addEventListener('scroll', () => {
                 backTop.classList.toggle('show', window.scrollY > 500);
